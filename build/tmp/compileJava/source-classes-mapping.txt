@@ -1,0 +1,4 @@
+com/ilang/myfridge/config/OpenApiConfig.java
+ com.ilang.myfridge.config.OpenApiConfig
+com/ilang/myfridge/MyFridgeApplication.java
+ com.ilang.myfridge.MyFridgeApplication
