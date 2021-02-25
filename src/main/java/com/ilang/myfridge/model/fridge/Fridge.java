@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Fridge extends BaseTimeEntity {
+  //test commit
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
