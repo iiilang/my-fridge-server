@@ -19,7 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Fridge extends BaseTimeEntity {
-  //test commit
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -38,6 +37,8 @@ public class Fridge extends BaseTimeEntity {
   private String fridgeMemo;
 
   @Column(length = 3, nullable = false)
+
+
   private String fridgeBasic;
 
   @ManyToOne

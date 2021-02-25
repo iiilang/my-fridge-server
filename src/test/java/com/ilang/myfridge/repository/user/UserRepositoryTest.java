@@ -1,4 +1,4 @@
-package com.ilang.myfridge.domain.user;
+package com.ilang.myfridge.repository.user;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
