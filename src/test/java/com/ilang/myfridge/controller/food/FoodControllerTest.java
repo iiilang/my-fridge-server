@@ -1,6 +1,6 @@
 package com.ilang.myfridge.controller.food;
 
-import com.ilang.myfridge.dto.food.FoodSaveDto;
+import com.ilang.myfridge.dto.food.FoodRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,18 +14,18 @@ public class FoodControllerTest {
 
   @LocalServerPort private int port;
 
-  @Test
-  public void 음식상세조회() throws Exception {
-    // given
-    String foodName = "가지";
-    String foodType = "ROOM";
-    Long fridgeId = 1L;
-
-    FoodSaveDto requestDto =
-        FoodSaveDto.builder().foodName(foodName).foodType(foodType).fridgeId(fridgeId).build();
-
-    String url = "http://localhost:" + port + "/api/v1/posts";
-
-    // when
-  }
+//  @Test
+//  public void 음식상세조회() throws Exception {
+//    // given
+//    String foodName = "가지";
+//    String foodType = "ROOM";
+//    Long fridgeId = 1L;
+//
+//    FoodRequestDto requestDto =
+//        FoodRequestDto.builder().foodName(foodName).foodType(foodType).fridgeId(fridgeId).build();
+//
+//    String url = "http://localhost:" + port + "/api/v1/posts";
+//
+//    // when
+//  }
 }

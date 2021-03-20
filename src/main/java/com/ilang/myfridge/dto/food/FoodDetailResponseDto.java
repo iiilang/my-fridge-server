@@ -4,7 +4,7 @@ import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.food.FoodType;
 import java.time.LocalDateTime;
 
-public class FoodDetailDto {
+public class FoodDetailResponseDto {
 
   private Long id;
   private String foodName;
@@ -12,8 +12,8 @@ public class FoodDetailDto {
   private String foodMemo;
   private LocalDateTime expireAt;
 
-  public static FoodDetailDto of(Food food) {
-    FoodDetailDto foodDetail = new FoodDetailDto();
+  public static FoodDetailResponseDto from(Food food) {
+    FoodDetailResponseDto foodDetail = new FoodDetailResponseDto();
     foodDetail.id = food.getId();
     foodDetail.foodName = food.getFoodName();
     foodDetail.foodType = food.getFoodType();
