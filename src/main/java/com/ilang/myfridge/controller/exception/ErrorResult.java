@@ -17,12 +17,14 @@ public class ErrorResult {
   private HttpStatus status;
   private String message;
 
-  // todo 여기 builder 넣으면 ErrorResponse에 safe delete하라고 뜨는 이유?
-  //  @Builder
-  public void ErrorResponse(int code, HttpStatus status, String message) {
+  private ErrorResult(int code, HttpStatus status, String message) {
     this.timestamp = LocalDateTime.now();
     this.code = code;
     this.status = status;
     this.message = message;
+  }
+
+  public static ErrorResult of(int code, HttpStatus status, String message) {
+    return new ErrorResult(code, status, message);
   }
 }

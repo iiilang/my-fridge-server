@@ -12,13 +12,21 @@ public class FoodDetailResponseDto {
   private String foodMemo;
   private LocalDateTime expireAt;
 
+  private FoodDetailResponseDto(
+      Long id, String foodName, FoodType foodType, String foodMemo, LocalDateTime expireAt) {
+    this.id = id;
+    this.foodName = foodName;
+    this.foodType = foodType;
+    this.foodMemo = foodMemo;
+    this.expireAt = expireAt;
+  }
+
   public static FoodDetailResponseDto from(Food food) {
-    FoodDetailResponseDto foodDetail = new FoodDetailResponseDto();
-    foodDetail.id = food.getId();
-    foodDetail.foodName = food.getFoodName();
-    foodDetail.foodType = food.getFoodType();
-    foodDetail.foodMemo = food.getFoodMemo();
-    foodDetail.expireAt = food.getExpireAt();
-    return foodDetail;
+    return new FoodDetailResponseDto(
+        food.getId(),
+        food.getFoodMemo(),
+        food.getFoodType(),
+        food.getFoodMemo(),
+        food.getExpireAt());
   }
 }

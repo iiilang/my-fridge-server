@@ -37,11 +37,20 @@ public class Fridge extends BaseTimeEntity {
   private String fridgeMemo;
 
   @Column(length = 3, nullable = false)
-
-
   private String fridgeBasic;
 
   @ManyToOne
   @JoinColumn(name = "userId")
   private User user;
+
+  // 테스트용
+  //  public Fridge(
+  //      Long id, String fridgeIcon, String fridgeName, FridgeType fridgeType, String fridgeBasic)
+  // {
+  //    this.id = id;
+  //    this.fridgeIcon = fridgeIcon;
+  //    this.fridgeName = fridgeName;
+  //    this.fridgeType = fridgeType;
+  //    this.fridgeBasic = fridgeBasic;
+  //  }
 }

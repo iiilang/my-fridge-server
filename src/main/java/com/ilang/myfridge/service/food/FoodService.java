@@ -1,10 +1,14 @@
 package com.ilang.myfridge.service.food;
 
+import static com.ilang.myfridge.model.fridge.FridgeType.ROOM;
+
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
-import com.ilang.myfridge.dto.food.FoodRequestDto;
+import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.model.food.Food;
+import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.repository.food.FoodRepository;
+import com.ilang.myfridge.repository.fridge.FridgeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FoodService {
 
+  private FridgeRepository fridgeRepository;
   private FoodRepository foodRepository;
 
   // todo findFood 테스트 코드 짜기 (단위 테스트 코드 짜는 거 공부하기)
-  // todo response 메시지 커스텀하기 (ResponseEntity 이용...? 아마...?)
-  // todo 시큐리티 쪽 어떻게 할지 고민해봐야 함. X.
   // todo swagger detail 적기
   // todo slf4j를 이용한 로깅
 
@@ -36,7 +39,18 @@ public class FoodService {
   }
 
   @Transactional
-  public Long saveFood(FoodRequestDto foodRequest) {
-    return foodRepository.save(Food.from(foodRequest)).getId();
+  public Long saveFood(FoodSaveRequestDto foodSaveRequestDto) {
+    //    테스트용 코드 (추후 삭제 예정)
+    //    Fridge savedFridge = new Fridge(1L, "1", "김치냉장고", ROOM, "yes");
+    //    fridgeRepository.save(savedFridge);
+
+    // TODO IllegalArgumentException 넣는 게 맞을까?
+    Fridge fridge =
+        fridgeRepository
+            .findById(foodSaveRequestDto.getFridgeId())
+            .orElseThrow(() -> new IllegalArgumentException());
+
+    Food food = Food.of(foodSaveRequestDto, fridge);
+    return foodRepository.save(food).getId();
   }
 }

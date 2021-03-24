@@ -1,9 +1,9 @@
 package com.ilang.myfridge.model.food;
 
-import com.ilang.myfridge.dto.food.FoodRequestDto;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.model.BaseTimeEntity;
 import com.ilang.myfridge.model.fridge.Fridge;
-import com.ilang.myfridge.repository.food.FoodRepository;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,15 +15,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-// (access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Food extends BaseTimeEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -38,17 +37,29 @@ public class Food extends BaseTimeEntity {
   @Column(columnDefinition = "text default null")
   private String foodMemo;
 
-  @Column private LocalDateTime expireAt;
+  @Column
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  private LocalDateTime expireAt;
 
   @ManyToOne
   @JoinColumn(name = "fridgeId")
   private Fridge fridge;
 
-  public static Food from(FoodRequestDto foodRequestDto) {
-    Food food = new Food();
-    food.foodName = foodRequestDto.getFoodName();
-    food.foodMemo = foodRequestDto.getFoodMemo();
-    food.foodType = foodRequestDto.getFoodType();
-    return food;
+  private Food(
+      String foodName, FoodType foodType, String foodMemo, LocalDateTime expireAt, Fridge fridge) {
+    this.foodName = foodName;
+    this.foodType = foodType;
+    this.foodMemo = foodMemo;
+    this.expireAt = expireAt;
+    this.fridge = fridge;
+  }
+
+  public static Food of(FoodSaveRequestDto foodSaveRequestDto, Fridge fridge) {
+    return new Food(
+        foodSaveRequestDto.getFoodName(),
+        foodSaveRequestDto.getFoodType(),
+        foodSaveRequestDto.getFoodMemo(),
+        foodSaveRequestDto.getExpireAt(),
+        fridge);
   }
 }

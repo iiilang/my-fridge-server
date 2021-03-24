@@ -1,7 +1,5 @@
 package com.ilang.myfridge.controller.food;
 
-import com.ilang.myfridge.dto.food.FoodRequestDto;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;

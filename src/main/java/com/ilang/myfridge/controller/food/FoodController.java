@@ -1,8 +1,9 @@
 package com.ilang.myfridge.controller.food;
 
 import com.ilang.myfridge.dto.food.FoodDetailResponseDto;
-import com.ilang.myfridge.dto.food.FoodRequestDto;
+import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.service.food.FoodService;
+
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +24,8 @@ public class FoodController {
     return FoodDetailResponseDto.from(foodService.findFoodDetail(foodId));
   }
 
-  @PostMapping("/create")
-  public Long saveFood(@RequestBody FoodRequestDto foodRequest){
+  @PostMapping("/save")
+  public Long saveFood(@RequestBody FoodSaveRequestDto foodRequest) {
     return foodService.saveFood(foodRequest);
   }
 }

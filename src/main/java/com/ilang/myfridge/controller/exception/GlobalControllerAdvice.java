@@ -9,13 +9,9 @@ import org.springframework.http.ResponseEntity;
 public class GlobalControllerAdvice {
 
   @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<ErrorResult> notFoundExcpetion(NotFoundException e) {
+  public ResponseEntity<ErrorResult> notFoundException(NotFoundException e) {
 
-    ErrorResult er = new ErrorResult();
-    // 1번
-    er.ErrorResponse(e.getCode(), HttpStatus.NOT_FOUND, e.getMessage());
-    // 2번
-    // er.builder().code(e.getCode()).status(HttpStatus.NOT_FOUND).message(e.getMessage()).build();
+    ErrorResult er = ErrorResult.of(e.getCode(), HttpStatus.NOT_FOUND, e.getMessage());
 
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(er);
   }
