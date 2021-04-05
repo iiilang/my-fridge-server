@@ -1,9 +1,11 @@
-package com.ilang.myfridge.controller.exception;
+package com.ilang.myfridge.controller;
 
+import com.ilang.myfridge.controller.exception.ErrorResult;
+import com.ilang.myfridge.controller.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.http.ResponseEntity;
 
 @ControllerAdvice
 public class GlobalControllerAdvice {
