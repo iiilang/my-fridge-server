@@ -27,4 +27,13 @@ public class FridgeService {
                         ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
                         ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Fridge fridge = fridgeRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(
+                        ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
+                        ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
+        fridgeRepository.delete(fridge);
+    }
 }

@@ -31,4 +31,10 @@ public class FridgeController {
     public Long saveFridge(@RequestBody FridgeSaveRequestDto fridgeSaveRequestDto) {
         return fridgeService.saveFridge(fridgeSaveRequestDto);
     }
+
+    @DeleteMapping("/{fridgeId}")
+    public Long delete(@PathVariable Long id) {
+        fridgeService.delete(id);
+        return id;
+    }
 }
