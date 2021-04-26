@@ -1,10 +1,8 @@
 package com.ilang.myfridge.model.food;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.model.BaseTimeEntity;
 import com.ilang.myfridge.model.fridge.Fridge;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,11 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Food extends BaseTimeEntity {
 
@@ -31,35 +31,20 @@ public class Food extends BaseTimeEntity {
   private String foodName;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 15, nullable = false)
+  @Column(length = 20, nullable = false)
   private FoodType foodType;
 
   @Column(columnDefinition = "text default null")
   private String foodMemo;
 
-  @Column
-  @JsonFormat(pattern = "yyyy-MM-dd")
-  private LocalDateTime expireAt;
+  @Column private LocalDate expireAt;
 
   @ManyToOne
   @JoinColumn(name = "fridgeId")
   private Fridge fridge;
 
-  private Food(
-      String foodName, FoodType foodType, String foodMemo, LocalDateTime expireAt, Fridge fridge) {
-    this.foodName = foodName;
-    this.foodType = foodType;
-    this.foodMemo = foodMemo;
-    this.expireAt = expireAt;
-    this.fridge = fridge;
-  }
-
-  public static Food of(FoodSaveRequestDto foodSaveRequestDto, Fridge fridge) {
-    return new Food(
-        foodSaveRequestDto.getFoodName(),
-        foodSaveRequestDto.getFoodType(),
-        foodSaveRequestDto.getFoodMemo(),
-        foodSaveRequestDto.getExpireAt(),
-        fridge);
+  public static Food of(
+      String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Fridge fridge) {
+    return new Food(null, foodName, foodType, foodMemo, expireAt, fridge);
   }
 }

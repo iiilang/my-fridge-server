@@ -9,20 +9,22 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FoodDetailResponseDto {
+public class FoodSaveResponseDto {
 
   private Long foodId;
   private String foodName;
   private FoodType foodType;
   private String foodMemo;
   private LocalDate expireAt;
+  private Long fridgeId;
 
-  public static FoodDetailResponseDto from(Food food) {
-    return new FoodDetailResponseDto(
+  public static FoodSaveResponseDto from(Food food) {
+    return new FoodSaveResponseDto(
         food.getId(),
-        food.getFoodMemo(),
+        food.getFoodName(),
         food.getFoodType(),
         food.getFoodMemo(),
-        food.getExpireAt());
+        food.getExpireAt(),
+        food.getFridge().getId());
   }
 }

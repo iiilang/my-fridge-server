@@ -12,11 +12,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Fridge extends BaseTimeEntity {
   @Id
@@ -30,7 +32,7 @@ public class Fridge extends BaseTimeEntity {
   private String fridgeName;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 10, nullable = false)
+  @Column(length = 20, nullable = false)
   private FridgeType fridgeType;
 
   @Column(columnDefinition = "text default null")
@@ -43,14 +45,14 @@ public class Fridge extends BaseTimeEntity {
   @JoinColumn(name = "userId")
   private User user;
 
-  // 테스트용
-  //  public Fridge(
-  //      Long id, String fridgeIcon, String fridgeName, FridgeType fridgeType, String fridgeBasic)
-  // {
-  //    this.id = id;
-  //    this.fridgeIcon = fridgeIcon;
-  //    this.fridgeName = fridgeName;
-  //    this.fridgeType = fridgeType;
-  //    this.fridgeBasic = fridgeBasic;
-  //  }
+  public static Fridge getInstance(
+      Long id,
+      String fridgeIcon,
+      String fridgeName,
+      FridgeType fridgeType,
+      String fridgeMemo,
+      String fridgeBasic,
+      User user) {
+    return new Fridge(id, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
+  }
 }

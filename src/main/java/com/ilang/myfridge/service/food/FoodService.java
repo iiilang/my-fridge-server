@@ -1,29 +1,28 @@
 package com.ilang.myfridge.service.food;
 
-import static com.ilang.myfridge.model.fridge.FridgeType.ROOM;
-
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
-import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.model.food.Food;
+import com.ilang.myfridge.model.food.FoodType;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
-import lombok.AllArgsConstructor;
+import java.time.LocalDate;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class FoodService {
 
-  private FridgeRepository fridgeRepository;
-  private FoodRepository foodRepository;
+  private final FridgeRepository fridgeRepository;
+  private final FoodRepository foodRepository;
 
   // todo findFood 테스트 코드 짜기 (단위 테스트 코드 짜는 거 공부하기)
-  // todo swagger detail 적기
   // todo slf4j를 이용한 로깅
 
+  @Transactional(readOnly = true)
   public Food findFoodDetail(Long foodId) {
 
     Food food =
@@ -39,18 +38,18 @@ public class FoodService {
   }
 
   @Transactional
-  public Long saveFood(FoodSaveRequestDto foodSaveRequestDto) {
-    //    테스트용 코드 (추후 삭제 예정)
-    //    Fridge savedFridge = new Fridge(1L, "1", "김치냉장고", ROOM, "yes");
-    //    fridgeRepository.save(savedFridge);
+  public Food saveFood(
+      String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Long fridgeId) {
 
-    // TODO IllegalArgumentException 넣는 게 맞을까?
     Fridge fridge =
         fridgeRepository
-            .findById(foodSaveRequestDto.getFridgeId())
-            .orElseThrow(() -> new IllegalArgumentException());
+            .findById(fridgeId)
+            .orElseThrow(
+                () ->
+                    new NotFoundException(
+                        ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
+                        ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
 
-    Food food = Food.of(foodSaveRequestDto, fridge);
-    return foodRepository.save(food).getId();
+    return foodRepository.save(Food.of(foodName, foodType, foodMemo, expireAt, fridge));
   }
 }

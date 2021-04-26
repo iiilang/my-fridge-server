@@ -1,18 +1,24 @@
 package com.ilang.myfridge.dto.food;
 
 import com.ilang.myfridge.model.food.FoodType;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FoodSaveRequestDto {
 
-  // TODO AssertThat 넣기 -> 에러 처리
   private String foodName;
   private FoodType foodType;
   private String foodMemo;
-  private LocalDateTime expireAt;
+  private LocalDate expireAt;
   private Long fridgeId;
+
+  //  public static FoodSaveRequestDto of(
+  //      String foodName, FoodType foodType, String foodMemo, LocalDateTime expireAt, Long
+  // fridgeId) {
+  //    return new FoodSaveRequestDto(foodName, foodType, foodMemo, expireAt, fridgeId);
+  //  }
 }
