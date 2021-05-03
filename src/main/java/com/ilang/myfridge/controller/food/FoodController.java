@@ -5,6 +5,7 @@ import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
 import com.ilang.myfridge.dto.food.FoodSaveResponseDto;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.service.food.FoodService;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,8 @@ public class FoodController {
       })
   @PostMapping("/save")
   public ResponseEntity<FoodSaveResponseDto> saveFood(
-      @RequestBody FoodSaveRequestDto foodSaveRequestDto) {
+      @RequestBody @Valid FoodSaveRequestDto foodSaveRequestDto) {
+
     Food food =
         foodService.saveFood(
             foodSaveRequestDto.getFoodName(),

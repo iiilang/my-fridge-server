@@ -4,13 +4,20 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-  FRIDGE_NOT_FOUND(1001, "냉장고를 찾을 수 없습니다."),
-  FOOD_NOT_FOUND(2001, "음식을 찾을 수 없습니다.");
+  // Common
+  INVALID_INPUT_VALUE("C001", "입력값이 유효하지 않습니다."),
+  JSON_PARSE_ERROR("C002", "JSON을 파싱할 수 없습니다."),
 
-  private int errorCode;
+  // Fridge
+  FRIDGE_NOT_FOUND("RE01", "냉장고를 찾을 수 없습니다."),
+
+  // Food
+  FOOD_NOT_FOUND("FO01", "음식을 찾을 수 없습니다.");
+
+  private String errorCode;
   private String errorMessage;
 
-  ErrorCode(int errorCode, String errorMessage) {
+  ErrorCode(String errorCode, String errorMessage) {
     this.errorCode = errorCode;
     this.errorMessage = errorMessage;
   }
