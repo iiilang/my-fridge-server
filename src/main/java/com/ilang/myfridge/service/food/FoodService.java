@@ -8,6 +8,9 @@ import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +33,7 @@ public class FoodService {
             .findById(foodId)
             .orElseThrow(
                 () ->
-                    new NotFoundException(
+                    NotFoundException.of(
                         ErrorCode.FOOD_NOT_FOUND.getErrorCode(),
                         ErrorCode.FOOD_NOT_FOUND.getErrorMessage()));
 
@@ -46,7 +49,7 @@ public class FoodService {
             .findById(fridgeId)
             .orElseThrow(
                 () ->
-                    new NotFoundException(
+                    NotFoundException.of(
                         ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
                         ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
 

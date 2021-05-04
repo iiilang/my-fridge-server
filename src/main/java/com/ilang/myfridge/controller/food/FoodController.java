@@ -29,7 +29,7 @@ public class FoodController {
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "2001", description = "Food Not Found")
+        @ApiResponse(responseCode = "FO01", description = "Food Not Found")
       })
   @GetMapping("/{foodId}")
   public ResponseEntity<FoodDetailResponseDto> findByFoodId(@PathVariable Long foodId) {
@@ -41,8 +41,8 @@ public class FoodController {
   @ApiResponses(
       value = {
         @ApiResponse(responseCode = "200", description = "OK"),
-        @ApiResponse(responseCode = "1001", description = "Fridge Not Found"),
-        @ApiResponse(responseCode = "2001", description = "Food Not Found")
+        @ApiResponse(responseCode = "RE01", description = "Fridge Not Found"),
+        @ApiResponse(responseCode = "FO01", description = "Food Not Found")
       })
   @PostMapping("/save")
   public ResponseEntity<FoodSaveResponseDto> saveFood(
