@@ -3,6 +3,7 @@ package com.ilang.myfridge.dto.food;
 import com.ilang.myfridge.model.food.FoodType;
 import java.time.LocalDate;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -17,10 +18,10 @@ public class FoodSaveRequestDto {
   private String foodName;
 
   // todo enum validation
-  @NotBlank private FoodType foodType;
+  @NotNull FoodType foodType;
   private String foodMemo;
 
-  @NotBlank private LocalDate expireAt;
+  @NotNull private LocalDate expireAt;
 
-  @NotBlank private Long fridgeId;
+  @NotNull private Long fridgeId;
 }
