@@ -1,30 +1,26 @@
 package com.ilang.myfridge.dto.fridge;
 
-import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
-import com.ilang.myfridge.model.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FridgeSaveRequestDto {
 
-    private String userid;
+    @NotBlank
+    @Size(min = 1, max = 50)
     private String fridgeName;
+
+    @NotNull
     private String fridgeIcon;
-    private String fridgeBasic;
-    private FridgeType fridgeType;
+    @NotNull private String fridgeBasic;
+    @NotNull FridgeType fridgeType;
     private String fridgeMemo;
 
-    @Builder
-    public FridgeSaveRequestDto(String userid, String fridgeName, String fridgeIcon, String fridgeBasic, FridgeType fridgeType, String fridgeMemo) {
-        this.userid = userid;
-        this.fridgeName = fridgeName;
-        this.fridgeIcon = fridgeIcon;
-        this.fridgeBasic = fridgeBasic;
-        this.fridgeType = fridgeType;
-        this.fridgeMemo = fridgeMemo;
-    }
+    @NotNull private Long userId;
 }
+

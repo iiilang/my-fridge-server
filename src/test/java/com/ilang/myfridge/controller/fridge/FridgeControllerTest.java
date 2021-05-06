@@ -26,8 +26,6 @@ public class FridgeControllerTest {
         FridgeType fridgeType = FridgeType.REFRE;
 
         //when
-        FridgeSaveRequestDto fridgeSaveRequestDto =
-            FridgeSaveRequestDto.builder().fridgeName(fridgeName).fridgeIcon(fridgeIcon).fridgeBasic(fridgeBasic).fridgeType(fridgeType).build();
 
         //then
     }
