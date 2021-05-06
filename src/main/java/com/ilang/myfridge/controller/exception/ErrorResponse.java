@@ -2,27 +2,30 @@ package com.ilang.myfridge.controller.exception;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
+
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-// todo @Getter로 어떻게 접근?
 @Getter
-@NoArgsConstructor
-public class ErrorResult {
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  public LocalDateTime timestamp;
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class ErrorResponse {
 
-  private int code;
-  private HttpStatus status;
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  private LocalDateTime timestamp;
+
+  private String code;
   private String message;
 
-  // todo 여기 builder 넣으면 ErrorResponse에 safe delete하라고 뜨는 이유?
-  //  @Builder
-  public void ErrorResponse(int code, HttpStatus status, String message) {
+  private ErrorResponse(String code, String message) {
     this.timestamp = LocalDateTime.now();
     this.code = code;
-    this.status = status;
     this.message = message;
   }
+
+  public static ErrorResponse of(String code, String message) {
+    return new ErrorResponse(code, message);
+  }
 }
+
