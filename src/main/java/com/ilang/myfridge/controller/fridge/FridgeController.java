@@ -1,6 +1,7 @@
 package com.ilang.myfridge.controller.fridge;
 
 import com.ilang.myfridge.dto.fridge.FridgeDetailResponseDto;
+import com.ilang.myfridge.dto.fridge.FridgeListResponseDto;
 import com.ilang.myfridge.dto.fridge.FridgeSaveRequestDto;
 import com.ilang.myfridge.service.fridge.FridgeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +9,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fridge")
@@ -25,6 +28,11 @@ public class FridgeController {
     @GetMapping("/{fridgeId}")
     public FridgeDetailResponseDto findByFridgeId(@PathVariable Long fridgeId) {
         return FridgeDetailResponseDto.from(fridgeService.findFridgeDetail(fridgeId));
+    }
+
+    @GetMapping("/list")
+    public List<FridgeListResponseDto> findAll() {
+        return fridgeService.findAllDesc();
     }
 
     @PostMapping("/save")
