@@ -7,25 +7,15 @@ import com.ilang.myfridge.model.user.User;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
 public class Fridge extends BaseTimeEntity {
-  public static Fridge from(FridgeSaveRequestDto fridgeSaveRequestDto) {
-    Fridge fridge = new Fridge();
-
-    fridge.fridgeName = fridgeSaveRequestDto.getFridgeName();
-    fridge.fridgeIcon = fridgeSaveRequestDto.getFridgeIcon();
-    fridge.fridgeBasic = fridgeSaveRequestDto.getFridgeBasic();
-    fridge.fridgeType = fridgeSaveRequestDto.getFridgeType();
-    fridge.user = new User(fridgeSaveRequestDto.getUserid());
-    fridge.fridgeMemo = fridgeSaveRequestDto.getFridgeMemo();
-
-    return fridge;
-  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,4 +40,8 @@ public class Fridge extends BaseTimeEntity {
   @ManyToOne(cascade= CascadeType.ALL)
   @JoinColumn(name = "userid")
   private User user;
+
+  public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
+    return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
+  }
 }
