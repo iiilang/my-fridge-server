@@ -10,5 +10,5 @@ public interface FridgeRepository extends JpaRepository<Fridge, Long> {
 
     List<Fridge> findAllDesc();
 
-    Optional<Fridge> findByName(String name);
+    Optional<Fridge> findByFridgeName(String name);
 }

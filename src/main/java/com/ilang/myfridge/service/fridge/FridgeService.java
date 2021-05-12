@@ -35,10 +35,11 @@ public class FridgeService {
         return fridgeRepository.save(Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon));
     }
 
-    //todo 커스텀 예외로 리팩토링
     private void validateSameName(String name) {
-        if (fridgeRepository.findByName(name).isPresent()) {
-            throw new IllegalArgumentException("냉장고 이름 중복");
+        if (fridgeRepository.findByFridgeName(name).isPresent()) {
+            throw NotFoundException.of(
+                    ErrorCode.SAME_NAME_ERROR.getErrorCode(),
+                    ErrorCode.SAME_NAME_ERROR.getErrorMessage());
         }
     }
 
@@ -54,7 +55,7 @@ public class FridgeService {
     @Transactional
     public List<FridgeListResponseDto> findAllDesc() {
         return fridgeRepository.findAllDesc().stream()
-                .map(FridgeListResponseDto::new)
+                .map(FridgeListResponseDto::from)
                 .collect(Collectors.toList());
     }
 }

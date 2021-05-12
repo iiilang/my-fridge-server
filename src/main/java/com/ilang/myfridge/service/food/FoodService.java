@@ -28,7 +28,7 @@ public class FoodService {
             .findById(foodId)
             .orElseThrow(
                 () ->
-                    new NotFoundException(
+                    NotFoundException.of(
                         ErrorCode.FOOD_NOT_FOUND.getErrorCode(),
                         ErrorCode.FOOD_NOT_FOUND.getErrorMessage()));
 
