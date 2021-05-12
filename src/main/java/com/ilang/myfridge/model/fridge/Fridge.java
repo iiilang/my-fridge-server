@@ -1,6 +1,5 @@
 package com.ilang.myfridge.model.fridge;
 
-import com.ilang.myfridge.dto.fridge.FridgeSaveRequestDto;
 import com.ilang.myfridge.model.BaseTimeEntity;
 import com.ilang.myfridge.model.user.User;
 

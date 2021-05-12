@@ -2,21 +2,28 @@ package com.ilang.myfridge.dto.fridge;
 
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FridgeListResponseDto {
-    private Long id;
+
+    private Long fridgeId;
     private String fridgeIcon;
     private String fridgeName;
     private FridgeType fridgeType;
     private String fridgeMemo;
     private String fridgeBasic;
 
-    public FridgeListResponseDto(Fridge fridge) {
-        this.id = id;
-        this.fridgeIcon = fridge.getFridgeIcon();
-        this.fridgeName = fridge.getFridgeName();
-        this.fridgeType = fridge.getFridgeType();
-        this.fridgeMemo = fridge.getFridgeMemo();
-        this.fridgeBasic = fridge.getFridgeBasic();
+    public static FridgeListResponseDto from(Fridge fridge) {
+        return new FridgeListResponseDto(
+            fridge.getId(),
+            fridge.getFridgeIcon(),
+            fridge.getFridgeName(),
+            fridge.getFridgeType(),
+            fridge.getFridgeMemo(),
+            fridge.getFridgeBasic());
     }
 }

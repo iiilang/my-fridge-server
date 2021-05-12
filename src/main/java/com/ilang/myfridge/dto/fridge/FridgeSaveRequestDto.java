@@ -15,8 +15,7 @@ public class FridgeSaveRequestDto {
     @Size(min = 1, max = 50)
     private String fridgeName;
 
-    @NotNull
-    private String fridgeIcon;
+    @NotNull private String fridgeIcon;
     @NotNull private String fridgeBasic;
     @NotNull FridgeType fridgeType;
     private String fridgeMemo;

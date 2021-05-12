@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FridgeSaveResponseDto {
 
-    private Long userid;
+    private Long fridgeId;
     private String fridgeName;
     private String fridgeIcon;
     private String fridgeBasic;
