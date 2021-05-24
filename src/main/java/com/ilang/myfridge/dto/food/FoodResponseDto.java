@@ -3,14 +3,13 @@ package com.ilang.myfridge.dto.food;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.food.FoodType;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FoodSaveResponseDto {
+public class FoodResponseDto {
 
   private Long foodId;
   private String foodName;
@@ -20,8 +19,8 @@ public class FoodSaveResponseDto {
   private String foodMemo;
   private Long fridgeId;
 
-  public static FoodSaveResponseDto from(Food food) {
-    return new FoodSaveResponseDto(
+  public static FoodResponseDto from(Food food) {
+    return new FoodResponseDto(
         food.getId(),
         food.getFoodName(),
         food.getFoodType(),

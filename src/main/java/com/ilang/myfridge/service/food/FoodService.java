@@ -79,6 +79,14 @@ public class FoodService {
     return food.update(foodName, foodType, foodMemo, expireAt);
   }
 
+  @Transactional
+  public void deleteFood(Long foodId) {
+    foodRepository
+        .findById(foodId)
+        .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
+    foodRepository.deleteById(foodId);
+  }
+
   private boolean checkFoodNameDup(Fridge fridge, String foodName) {
     List foodNameList =
         foodRepository.findAllByFridge(fridge).stream()

@@ -25,7 +25,7 @@ public class Fridge extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(length = 30, nullable = false)
+  @Column(length = 10, nullable = false)
   private String fridgeIcon;
 
   @Column(length = 50, nullable = false)
@@ -44,15 +44,4 @@ public class Fridge extends BaseTimeEntity {
   @ManyToOne
   @JoinColumn(name = "userId")
   private User user;
-
-  public static Fridge getInstance(
-      Long id,
-      String fridgeIcon,
-      String fridgeName,
-      FridgeType fridgeType,
-      String fridgeMemo,
-      String fridgeBasic,
-      User user) {
-    return new Fridge(id, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
-  }
 }
