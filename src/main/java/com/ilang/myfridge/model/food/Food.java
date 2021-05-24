@@ -18,8 +18,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Entity
 public class Food extends BaseTimeEntity {
 
@@ -46,5 +46,13 @@ public class Food extends BaseTimeEntity {
   public static Food of(
       String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Fridge fridge) {
     return new Food(null, foodName, foodType, foodMemo, expireAt, fridge);
+  }
+
+  public Food update(String foodName, FoodType foodType, String foodMemo, LocalDate expireAt) {
+    this.foodName = foodName;
+    this.foodType = foodType;
+    this.foodMemo = foodMemo;
+    this.expireAt = expireAt;
+    return this;
   }
 }

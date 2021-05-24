@@ -2,7 +2,8 @@ package com.ilang.myfridge.controller.food;
 
 import com.ilang.myfridge.dto.food.FoodDetailResponseDto;
 import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
-import com.ilang.myfridge.dto.food.FoodSaveResponseDto;
+import com.ilang.myfridge.dto.food.FoodResponseDto;
+import com.ilang.myfridge.dto.food.FoodUpdateRequestDto;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.service.food.FoodService;
 import javax.validation.Valid;
@@ -20,15 +21,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/api/v1/food")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FoodController {
 
   private final FoodService foodService;
 
-  @Operation(summary = "음식 id로 음식 상세 정보 조회")
+  @Operation(summary = "음식 정보 조회")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "200", description = "Found Food Detail"),
         @ApiResponse(responseCode = "FO01", description = "Food Not Found")
       })
   @GetMapping("/{foodId}")
@@ -40,12 +41,13 @@ public class FoodController {
   @Operation(summary = "음식 저장")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "200", description = "OK"),
+        @ApiResponse(responseCode = "200", description = "Food Saved"),
         @ApiResponse(responseCode = "RE01", description = "Fridge Not Found"),
-        @ApiResponse(responseCode = "FO01", description = "Food Not Found")
+        @ApiResponse(responseCode = "FO02", description = "Food Name Duplicated"),
+        @ApiResponse(responseCode = "FO03", description = "Food Type Not Match")
       })
   @PostMapping("/save")
-  public ResponseEntity<FoodSaveResponseDto> saveFood(
+  public ResponseEntity<FoodResponseDto> saveFood(
       @RequestBody @Valid FoodSaveRequestDto foodSaveRequestDto) {
 
     Food food =
@@ -55,6 +57,30 @@ public class FoodController {
             foodSaveRequestDto.getFoodMemo(),
             foodSaveRequestDto.getExpireAt(),
             foodSaveRequestDto.getFridgeId());
-    return ResponseEntity.ok(FoodSaveResponseDto.from(food));
+
+    return ResponseEntity.ok(FoodResponseDto.from(food));
+  }
+
+  @Operation(summary = "음식 수정")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Food Updated"),
+        @ApiResponse(responseCode = "FO01", description = "Food Not Found"),
+        @ApiResponse(responseCode = "FO02", description = "Food Name Duplicated"),
+        @ApiResponse(responseCode = "FO03", description = "Food Type Not Match")
+      })
+  @PutMapping("/update/{foodId}")
+  public ResponseEntity<FoodResponseDto> updateFood(
+      @PathVariable Long foodId, @RequestBody @Valid FoodUpdateRequestDto foodUpdateRequestDto) {
+
+    Food food =
+        foodService.updateFood(
+            foodId,
+            foodUpdateRequestDto.getFoodName(),
+            foodUpdateRequestDto.getFoodType(),
+            foodUpdateRequestDto.getFoodMemo(),
+            foodUpdateRequestDto.getExpireAt());
+
+    return ResponseEntity.ok(FoodResponseDto.from(food));
   }
 }

@@ -12,10 +12,12 @@ public enum ErrorCode {
   FRIDGE_NOT_FOUND("RE01", "냉장고를 찾을 수 없습니다."),
 
   // Food
-  FOOD_NOT_FOUND("FO01", "음식을 찾을 수 없습니다.");
+  FOOD_NOT_FOUND("FO01", "음식을 찾을 수 없습니다."),
+  FOOD_NAME_DUPLICATED("FO02", "음식명이 중복됩니다."),
+  TYPE_NOT_MATCH("FO03", "냉장고와 식품의 타입이 맞지 않습니다.");
 
-  private String errorCode;
-  private String errorMessage;
+  private final String errorCode;
+  private final String errorMessage;
 
   ErrorCode(String errorCode, String errorMessage) {
     this.errorCode = errorCode;
