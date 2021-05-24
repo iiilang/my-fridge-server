@@ -4,14 +4,11 @@ import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.food.FoodType;
-import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -47,7 +44,7 @@ public class FoodService {
             .findById(fridgeId)
             .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
 
-    if (checkFoodNameDup(fridge, foodName)) {
+    if (foodNameExist(fridge, foodName)) {
       throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
     }
 
@@ -68,7 +65,7 @@ public class FoodService {
             .findById(foodId)
             .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
 
-    if (checkFoodNameDup(food.getFridge(), foodName)) {
+    if (foodNameExist(food.getFridge(), foodId, foodName)) {
       throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
     }
 
@@ -87,12 +84,24 @@ public class FoodService {
     foodRepository.deleteById(foodId);
   }
 
-  private boolean checkFoodNameDup(Fridge fridge, String foodName) {
-    List foodNameList =
+  private boolean foodNameExist(Fridge fridge, String foodName) {
+    List<String> foodNameList =
         foodRepository.findAllByFridge(fridge).stream()
             .map(food -> food.getFoodName())
+            .filter(food -> food.equals(foodName))
             .collect(Collectors.toList());
 
-    return foodNameList.stream().anyMatch(food -> food.equals(foodName));
+    return !(foodNameList.isEmpty());
+  }
+
+  private boolean foodNameExist(Fridge fridge, Long foodId, String foodName) {
+    List<String> foodNameList =
+        foodRepository.findAllByFridge(fridge).stream()
+            .filter(food -> (!food.equals(foodId)))
+            .map(food -> food.getFoodName())
+            .filter(food -> food.equals(foodName))
+            .collect(Collectors.toList());
+
+    return !(foodNameList.isEmpty());
   }
 }
