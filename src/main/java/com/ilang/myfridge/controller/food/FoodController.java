@@ -49,7 +49,7 @@ public class FoodController {
         @ApiResponse(responseCode = "FO02", description = "Food Name Duplicated"),
         @ApiResponse(responseCode = "FO03", description = "Food Type Not Match")
       })
-  @PostMapping("/save")
+  @PostMapping("")
   public ResponseEntity<FoodResponseDto> saveFood(
       @RequestBody @Valid FoodSaveRequestDto foodSaveRequestDto) {
 
@@ -72,7 +72,7 @@ public class FoodController {
         @ApiResponse(responseCode = "FO02", description = "Food Name Duplicated"),
         @ApiResponse(responseCode = "FO03", description = "Food Type Not Match")
       })
-  @PutMapping("/update/{foodId}")
+  @PutMapping("/{foodId}")
   public ResponseEntity<FoodResponseDto> updateFood(
       @PathVariable Long foodId, @RequestBody @Valid FoodUpdateRequestDto foodUpdateRequestDto) {
 
@@ -93,7 +93,7 @@ public class FoodController {
         @ApiResponse(responseCode = "204", description = "Food Deleted"),
         @ApiResponse(responseCode = "FO01", description = "Food Not Found")
       })
-  @DeleteMapping("/delete/{foodId}")
+  @DeleteMapping("/{foodId}")
   public ResponseEntity deleteFood(@PathVariable Long foodId) {
     foodService.deleteFood(foodId);
     return ResponseEntity.noContent().build();
