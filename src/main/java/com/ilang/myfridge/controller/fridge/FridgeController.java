@@ -64,7 +64,25 @@ public class FridgeController {
         return ResponseEntity.ok(fridgeListResponses);
     }
 
-    @Operation(summary = "냉장고 id로 삭제")
+    @Operation(summary = "냉장고 수정")
+    @ApiResponses(
+        value = {
+            @ApiResponse(responseCode = "200", description = "Fridge Updated"),
+            @ApiResponse(responseCode = "RE01", description = "Fridge Not Found"),
+            @ApiResponse(responseCode = "RE02", description = "Fridge Name Duplicated")
+        })
+    @PutMapping("/{fridgeId}")
+    public ResponseEntity<FridgeDetailResponseDto> updateFridge(@PathVariable Long fridgeId, @RequestBody @Valid FridgeUpdateRequestDto fridgeUpdateRequestDto) {
+        Fridge fridge = fridgeService.updateFridge(
+                            fridgeId,
+                            fridgeUpdateRequestDto.getFridgeName(),
+                            fridgeUpdateRequestDto.getFridgeIcon(),
+                            fridgeUpdateRequestDto.getFridgeBasic(),
+                            fridgeUpdateRequestDto.getFridgeMemo());
+        return ResponseEntity.ok(FridgeDetailResponseDto.from(fridge));
+    }
+
+    @Operation(summary = "냉장고 삭제")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Fridge Deleted"),

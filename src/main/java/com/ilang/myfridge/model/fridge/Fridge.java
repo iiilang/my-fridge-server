@@ -43,4 +43,12 @@ public class Fridge extends BaseTimeEntity {
   public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
     return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
   }
+
+  public Fridge update(String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+    this.fridgeName = fridgeName;
+    this.fridgeIcon = fridgeIcon;
+    this.fridgeBasic = fridgeBasic;
+    this.fridgeMemo = fridgeMemo;
+    return this;
+  }
 }

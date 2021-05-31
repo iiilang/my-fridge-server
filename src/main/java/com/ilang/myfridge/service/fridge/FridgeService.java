@@ -38,10 +38,18 @@ public class FridgeService {
         return fridgeRepository.save(Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon));
     }
 
-    private void validateSameName(String name) {
-        if (fridgeRepository.findByFridgeName(name).isPresent()) {
+    @Transactional
+    public Fridge updateFridge(
+            Long fridgeId, String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+        Fridge fridge = fridgeRepository
+                .findById(fridgeId)
+                .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+
+        if (fridgeNameExist(fridge.getUser().getId(), fridgeId, fridgeName)) {
             throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
+
+        return fridge.update(fridgeName, fridgeIcon, fridgeBasic, fridgeMemo);
     }
 
     @Transactional
