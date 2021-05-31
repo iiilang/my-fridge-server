@@ -1,15 +1,13 @@
 package com.ilang.myfridge.controller.fridge;
 
-import com.ilang.myfridge.dto.fridge.FridgeDetailResponseDto;
-import com.ilang.myfridge.dto.fridge.FridgeListResponseDto;
-import com.ilang.myfridge.dto.fridge.FridgeSaveRequestDto;
-import com.ilang.myfridge.dto.fridge.FridgeSaveResponseDto;
+import com.ilang.myfridge.dto.fridge.*;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.service.fridge.FridgeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +16,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/fridge")
-@AllArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FridgeController {
 
     private final FridgeService fridgeService;
 
-    @Operation(summary = "냉장고 id로 냉장고 상세 정보 조회")
+    @Operation(summary = "냉장고 정보 조회")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "200", description = "Found Fridge Detail"),
                     @ApiResponse(responseCode = "RE01", description = "Fridge Not Found")
             })
     @GetMapping("/{fridgeId}")
@@ -38,12 +36,14 @@ public class FridgeController {
     @Operation(summary = "냉장고 저장")
     @ApiResponses(
         value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "RE01", description = "Fridge Not Found")
+            @ApiResponse(responseCode = "200", description = "Fridge Saved"),
+            @ApiResponse(responseCode = "RE01", description = "Fridge Not Found"),
+            @ApiResponse(responseCode = "RE02", description = "Fridge Name Duplicated")
         })
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<FridgeSaveResponseDto> saveFridge(@RequestBody @Valid FridgeSaveRequestDto fridgeSaveRequestDto) {
         Fridge fridge = fridgeService.saveFridge(
+                fridgeSaveRequestDto.getUserId(),
                 fridgeSaveRequestDto.getFridgeName(),
                 fridgeSaveRequestDto.getFridgeType(),
                 fridgeSaveRequestDto.getFridgeMemo(),
@@ -67,12 +67,12 @@ public class FridgeController {
     @Operation(summary = "냉장고 id로 삭제")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "OK"),
+                    @ApiResponse(responseCode = "200", description = "Fridge Deleted"),
                     @ApiResponse(responseCode = "RE01", description = "Fridge Not Found")
             })
     @DeleteMapping("/{fridgeId}")
-    public ResponseEntity delete(@PathVariable Long fridgeId) {
-        fridgeService.delete(fridgeId);
+    public ResponseEntity<Void> delete(@PathVariable Long fridgeId) {
+        fridgeService.deleteFridge(fridgeId);
         return ResponseEntity.noContent().build();
     }
 }
