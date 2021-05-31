@@ -2,7 +2,6 @@ package com.ilang.myfridge.service.food;
 
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
-import com.ilang.myfridge.dto.food.FoodDetailDto;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import lombok.AllArgsConstructor;
@@ -28,9 +27,7 @@ public class FoodService {
             .findById(foodId)
             .orElseThrow(
                 () ->
-                    NotFoundException.of(
-                        ErrorCode.FOOD_NOT_FOUND.getErrorCode(),
-                        ErrorCode.FOOD_NOT_FOUND.getErrorMessage()));
+                        NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
 
     // todo dto로 변경하는 건 controller에서
     return food;

@@ -7,13 +7,15 @@ public enum ErrorCode {
   // Common
   INVALID_INPUT_VALUE("C001", "입력값이 유효하지 않습니다."),
   JSON_PARSE_ERROR("C002", "JSON을 파싱할 수 없습니다."),
-  SAME_NAME_ERROR("C003", "중복된 이름을 사용할 수 없습니다."),
 
   // Fridge
   FRIDGE_NOT_FOUND("RE01", "냉장고를 찾을 수 없습니다."),
+  FRIDGE_NAME_DUPLICATED("RE02", "냉장고명이 중복됩니다."),
 
   // Food
-  FOOD_NOT_FOUND("FO01", "음식을 찾을 수 없습니다.");
+  FOOD_NOT_FOUND("FO01", "음식을 찾을 수 없습니다."),
+  FOOD_NAME_DUPLICATED("FO02", "음식명이 중복됩니다."),
+  TYPE_NOT_MATCH("FO03", "냉장고와 식품의 타입이 맞지 않습니다.");
 
   private String errorCode;
   private String errorMessage;

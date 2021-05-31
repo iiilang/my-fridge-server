@@ -10,7 +10,7 @@ public class NotFoundException extends NullPointerException {
   private final String code;
   private final String message;
 
-  public static NotFoundException of(String code, String message) {
-    return new NotFoundException(code, message);
+  public static NotFoundException of(ErrorCode errorCode) {
+    return new NotFoundException(errorCode.getErrorCode(), errorCode.getErrorMessage());
   }
 }

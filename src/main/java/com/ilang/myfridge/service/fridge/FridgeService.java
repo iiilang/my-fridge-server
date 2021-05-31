@@ -22,9 +22,7 @@ public class FridgeService {
     @Transactional
     public Fridge findFridgeDetail(Long fridgeId) {
         Fridge fridge = fridgeRepository.findById(fridgeId).orElseThrow(
-                () -> NotFoundException.of(
-                        ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
-                        ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
+                () -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
         return fridge;
     }
 
@@ -37,18 +35,14 @@ public class FridgeService {
 
     private void validateSameName(String name) {
         if (fridgeRepository.findByFridgeName(name).isPresent()) {
-            throw NotFoundException.of(
-                    ErrorCode.SAME_NAME_ERROR.getErrorCode(),
-                    ErrorCode.SAME_NAME_ERROR.getErrorMessage());
+            throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
     }
 
     @Transactional
     public void delete(Long id) {
         Fridge fridge = fridgeRepository.findById(id).orElseThrow(
-                () -> NotFoundException.of(
-                        ErrorCode.FRIDGE_NOT_FOUND.getErrorCode(),
-                        ErrorCode.FRIDGE_NOT_FOUND.getErrorMessage()));
+                () -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
         fridgeRepository.delete(fridge);
     }
 
