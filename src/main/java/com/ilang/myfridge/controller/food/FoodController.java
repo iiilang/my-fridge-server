@@ -6,6 +6,8 @@ import com.ilang.myfridge.dto.food.FoodUpdateRequestDto;
 import com.ilang.myfridge.dto.food.FoodResponseDto;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.service.food.FoodService;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,19 @@ public class FoodController {
   public ResponseEntity<FoodDetailResponseDto> findByFoodId(@PathVariable Long foodId) {
     Food food = foodService.findFoodDetail(foodId);
     return ResponseEntity.ok(FoodDetailResponseDto.from(food));
+  }
+
+  @Operation(summary = "음식 목록 조회")
+  @ApiResponses(
+      value = {
+        @ApiResponse(responseCode = "200", description = "Found Food List"),
+        @ApiResponse(responseCode = "RE01", description = "Fridge Not Found")
+      })
+  @GetMapping("/list/{fridgeId}")
+  public ResponseEntity<List<FoodResponseDto>> findByFridgeId(@PathVariable Long fridgeId) {
+    List<Food> foodList = foodService.findFoodList(fridgeId);
+    return ResponseEntity.ok(
+        foodList.stream().map(FoodResponseDto::from).collect(Collectors.toList()));
   }
 
   @Operation(summary = "음식 저장")

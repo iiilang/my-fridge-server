@@ -36,6 +36,17 @@ public class FoodService {
   }
 
   @Transactional
+  public List<Food> findFoodList(Long fridgeId) {
+
+    Fridge fridge =
+        fridgeRepository
+            .findById(fridgeId)
+            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+
+    return foodRepository.findAllByFridge(fridge);
+  }
+
+  @Transactional
   public Food saveFood(
       String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Long fridgeId) {
 
