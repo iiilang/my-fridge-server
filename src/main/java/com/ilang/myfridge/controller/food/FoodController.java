@@ -23,7 +23,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/api/v1/food")
+@RequestMapping("/api/v1/foods")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FoodController {
 
@@ -82,7 +82,8 @@ public class FoodController {
             foodUpdateRequestDto.getFoodName(),
             foodUpdateRequestDto.getFoodType(),
             foodUpdateRequestDto.getFoodMemo(),
-            foodUpdateRequestDto.getExpireAt());
+            foodUpdateRequestDto.getExpireAt(),
+            foodUpdateRequestDto.getFridgeId());
 
     return ResponseEntity.ok(FoodResponseDto.from(food));
   }

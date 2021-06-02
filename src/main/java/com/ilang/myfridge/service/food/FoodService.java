@@ -58,7 +58,12 @@ public class FoodService {
 
   @Transactional
   public Food updateFood(
-      Long foodId, String foodName, FoodType foodType, String foodMemo, LocalDate expireAt) {
+      Long foodId,
+      String foodName,
+      FoodType foodType,
+      String foodMemo,
+      LocalDate expireAt,
+      Long fridgeId) {
 
     Food food =
         foodRepository
@@ -69,11 +74,15 @@ public class FoodService {
       throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
     }
 
-    if (!foodType.typeMatch(food.getFridge().getFridgeType())) {
+    Fridge fridge =
+        fridgeRepository
+            .findById(fridgeId)
+            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+
+    if (!foodType.typeMatch(fridge.getFridgeType())) {
       throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
     }
-
-    return food.update(foodName, foodType, foodMemo, expireAt);
+    return food.update(foodName, foodType, foodMemo, expireAt, fridge);
   }
 
   @Transactional
@@ -97,7 +106,7 @@ public class FoodService {
   private boolean foodNameExist(Fridge fridge, Long foodId, String foodName) {
     List<String> foodNameList =
         foodRepository.findAllByFridge(fridge).stream()
-            .filter(food -> (!food.equals(foodId)))
+            .filter(food -> (!food.getId().equals(foodId)))
             .map(food -> food.getFoodName())
             .filter(food -> food.equals(foodName))
             .collect(Collectors.toList());

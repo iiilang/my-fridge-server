@@ -48,11 +48,13 @@ public class Food extends BaseTimeEntity {
     return new Food(null, foodName, foodType, foodMemo, expireAt, fridge);
   }
 
-  public Food update(String foodName, FoodType foodType, String foodMemo, LocalDate expireAt) {
+  public Food update(
+      String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Fridge fridge) {
     this.foodName = foodName;
     this.foodType = foodType;
     this.foodMemo = foodMemo;
     this.expireAt = expireAt;
+    this.fridge = fridge;
     return this;
   }
 }

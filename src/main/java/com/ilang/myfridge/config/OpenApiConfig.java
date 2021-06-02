@@ -1,11 +1,7 @@
 package com.ilang.myfridge.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
   @Bean
   public GroupedOpenApi fridgeApis() {
-    return GroupedOpenApi.builder().setGroup("fridge").pathsToMatch("/**/fridge/**").build();
+    return GroupedOpenApi.builder().setGroup("fridges").pathsToMatch("/**/fridges/**").build();
   }
 
   @Bean
   public GroupedOpenApi foodApis() {
-    return GroupedOpenApi.builder().setGroup("food").pathsToMatch("/**/food/**").build();
+    return GroupedOpenApi.builder().setGroup("foods").pathsToMatch("/**/foods/**").build();
   }
 
   @Bean
