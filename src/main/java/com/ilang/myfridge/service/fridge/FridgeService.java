@@ -17,71 +17,83 @@ import java.util.stream.Collectors;
 @Service
 public class FridgeService {
 
-    private final FridgeRepository fridgeRepository;
+  private final FridgeRepository fridgeRepository;
 
-    @Transactional
-    public Fridge findFridgeDetail(Long fridgeId) {
-        Fridge fridge = fridgeRepository
-                .findById(fridgeId)
-                .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+  @Transactional
+  public Fridge findFridgeDetail(Long fridgeId) {
+    Fridge fridge =
+        fridgeRepository
+            .findById(fridgeId)
+            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
 
-        return fridge;
+    return fridge;
+  }
+
+  @Transactional
+  public Fridge saveFridge(
+      Long userId,
+      String fridgeName,
+      FridgeType fridgeType,
+      String fridgeMemo,
+      String fridgeBasic,
+      String fridgeIcon) {
+    if (fridgeNameExist(userId, fridgeName)) {
+      throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
     }
 
-    @Transactional
-    public Fridge saveFridge(
-            Long userId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
-        if (fridgeNameExist(userId, fridgeName)) {
-            throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
-        }
+    return fridgeRepository.save(
+        Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon));
+  }
 
-        return fridgeRepository.save(Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon));
+  @Transactional
+  public Fridge updateFridge(
+      Long fridgeId, String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+    Fridge fridge =
+        fridgeRepository
+            .findById(fridgeId)
+            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+
+    if (fridgeNameExist(fridge.getUser().getId(), fridgeId, fridgeName)) {
+      throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
     }
 
-    @Transactional
-    public Fridge updateFridge(
-            Long fridgeId, String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
-        Fridge fridge = fridgeRepository
-                .findById(fridgeId)
-                .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+    return fridge.update(fridgeName, fridgeIcon, fridgeBasic, fridgeMemo);
+  }
 
-        if (fridgeNameExist(fridge.getUser().getId(), fridgeId, fridgeName)) {
-            throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
-        }
+  @Transactional
+  public void deleteFridge(Long id) {
+    Fridge fridge =
+        fridgeRepository
+            .findById(id)
+            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+    fridgeRepository.delete(fridge);
+  }
 
-        return fridge.update(fridgeName, fridgeIcon, fridgeBasic, fridgeMemo);
-    }
+  @Transactional
+  public List<FridgeListResponseDto> findAllDesc() {
+    return fridgeRepository.findAllDesc().stream()
+        .map(FridgeListResponseDto::from)
+        .collect(Collectors.toList());
+  }
 
-    @Transactional
-    public void deleteFridge(Long id) {
-        Fridge fridge = fridgeRepository.findById(id).orElseThrow(
-                () -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
-        fridgeRepository.delete(fridge);
-    }
+  private boolean fridgeNameExist(Long userId, String fridgeName) {
+    List<String> fridgeNames =
+        fridgeRepository.findAllByUserId(userId).stream()
+            .map(Fridge::getFridgeName)
+            .filter(fridge -> fridge.equals(fridgeName))
+            .collect(Collectors.toList());
 
-    @Transactional
-    public List<FridgeListResponseDto> findAllDesc() {
-        return fridgeRepository.findAllDesc().stream()
-                .map(FridgeListResponseDto::from)
-                .collect(Collectors.toList());
-    }
+    return !(fridgeNames.isEmpty());
+  }
 
-    private boolean fridgeNameExist(Long userId, String fridgeName) {
-        List<String> fridgeNames = fridgeRepository.findAllByUserId(userId).stream()
-                .map(Fridge::getFridgeName)
-                .filter(fridge -> fridge.equals(fridgeName))
-                .collect(Collectors.toList());
+  private boolean fridgeNameExist(Long userId, Long fridgeId, String fridgeName) {
+    List<String> fridgeNames =
+        fridgeRepository.findAllByUserId(userId).stream()
+            .filter(fridge -> !(fridge.equals(fridgeId)))
+            .map(Fridge::getFridgeName)
+            .filter(fridge -> fridge.equals(fridgeName))
+            .collect(Collectors.toList());
 
-        return !(fridgeNames.isEmpty());
-    }
-
-    private boolean fridgeNameExist(Long userId, Long fridgeId, String fridgeName) {
-        List<String> fridgeNames = fridgeRepository.findAllByUserId(userId).stream()
-                .filter(fridge -> !(fridge.equals(fridgeId)))
-                .map(Fridge::getFridgeName)
-                .filter(fridge -> fridge.equals(fridgeName))
-                .collect(Collectors.toList());
-
-        return !(fridgeNames.isEmpty());
-    }
+    return !(fridgeNames.isEmpty());
+  }
 }
