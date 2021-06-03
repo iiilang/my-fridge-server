@@ -2,7 +2,7 @@ package com.ilang.myfridge.service.fridge;
 
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
-import com.ilang.myfridge.dto.fridge.FridgeListResponseDto;
+import com.ilang.myfridge.dto.fridge.FridgeResponseDto;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
@@ -60,9 +60,9 @@ public class FridgeService {
     }
 
     @Transactional
-    public List<FridgeListResponseDto> findAllDesc() {
-        return fridgeRepository.findAllDesc().stream()
-                .map(FridgeListResponseDto::from)
+    public List<FridgeResponseDto> findFridgeList(Long userId) {
+        return fridgeRepository.findAllByUserId(userId).stream()
+                .map(FridgeResponseDto::from)
                 .collect(Collectors.toList());
     }
 

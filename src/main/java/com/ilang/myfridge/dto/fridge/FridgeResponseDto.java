@@ -8,8 +8,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FridgeListResponseDto {
-
+public class FridgeResponseDto {
     private Long fridgeId;
     private String fridgeIcon;
     private String fridgeName;
@@ -17,13 +16,13 @@ public class FridgeListResponseDto {
     private String fridgeMemo;
     private String fridgeBasic;
 
-    public static FridgeListResponseDto from(Fridge fridge) {
-        return new FridgeListResponseDto(
-            fridge.getId(),
-            fridge.getFridgeIcon(),
-            fridge.getFridgeName(),
-            fridge.getFridgeType(),
-            fridge.getFridgeMemo(),
-            fridge.getFridgeBasic());
+    public static FridgeResponseDto from(Fridge fridge) {
+        return new FridgeResponseDto(
+                fridge.getId(),
+                fridge.getFridgeIcon(),
+                fridge.getFridgeName(),
+                fridge.getFridgeType(),
+                fridge.getFridgeMemo(),
+                fridge.getFridgeBasic());
     }
 }
