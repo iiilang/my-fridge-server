@@ -5,7 +5,9 @@ import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.dto.fridge.FridgeResponseDto;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
+import com.ilang.myfridge.model.user.User;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
+import com.ilang.myfridge.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class FridgeService {
 
     private final FridgeRepository fridgeRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Fridge findFridgeDetail(Long fridgeId) {
@@ -31,11 +34,15 @@ public class FridgeService {
     @Transactional
     public Fridge saveFridge(
             Long userId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
-        if (fridgeNameExist(userId, fridgeName)) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> NotFoundException.of(ErrorCode.USER_NOT_FOUND));
+
+        if (fridgeNameExist(user, fridgeName)) {
             throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
 
-        return fridgeRepository.save(Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon));
+        return fridgeRepository.save(Fridge.of(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon, user));
     }
 
     @Transactional
@@ -66,8 +73,8 @@ public class FridgeService {
                 .collect(Collectors.toList());
     }
 
-    private boolean fridgeNameExist(Long userId, String fridgeName) {
-        List<String> fridgeNames = fridgeRepository.findAllByUserId(userId).stream()
+    private boolean fridgeNameExist(User user, String fridgeName) {
+        List<String> fridgeNames = fridgeRepository.findAllByUser(user).stream()
                 .map(Fridge::getFridgeName)
                 .filter(fridge -> fridge.equals(fridgeName))
                 .collect(Collectors.toList());
