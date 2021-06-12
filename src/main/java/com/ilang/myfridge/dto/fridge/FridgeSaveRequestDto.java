@@ -17,9 +17,12 @@ public class FridgeSaveRequestDto {
 
     @NotNull private String fridgeIcon;
     @NotNull private String fridgeBasic;
-    @NotNull FridgeType fridgeType;
+    @NotNull private FridgeType fridgeType;
     private String fridgeMemo;
 
     @NotNull private Long userId;
+
+    public FridgeSaveRequestDto() {
+    }
 }
 
