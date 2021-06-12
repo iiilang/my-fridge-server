@@ -23,7 +23,7 @@ public class UserRepositoryTest {
     // given
     String uuid = "abcdefghijklmnop";
 
-    userRepository.save(User.builder().uuid(uuid).build());
+//    userRepository.save(User.builder().uuid(uuid).build());
 
     // when
     List<User> userLists = userRepository.findAll();
