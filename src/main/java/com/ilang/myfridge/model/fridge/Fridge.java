@@ -27,7 +27,7 @@ public class Fridge extends BaseTimeEntity {
   private String fridgeName;
 
   @Enumerated(EnumType.STRING)
-  @Column(length = 10, nullable = false)
+  @Column(length = 20, nullable = false)
   private FridgeType fridgeType;
 
   @Column(columnDefinition = "text default null")
