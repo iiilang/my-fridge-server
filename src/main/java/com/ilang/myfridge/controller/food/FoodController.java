@@ -1,8 +1,7 @@
 package com.ilang.myfridge.controller.food;
 
 import com.ilang.myfridge.dto.food.FoodDetailResponseDto;
-import com.ilang.myfridge.dto.food.FoodSaveRequestDto;
-import com.ilang.myfridge.dto.food.FoodUpdateRequestDto;
+import com.ilang.myfridge.dto.food.FoodRequestDto;
 import com.ilang.myfridge.dto.food.FoodResponseDto;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.service.food.FoodService;
@@ -66,15 +65,15 @@ public class FoodController {
       })
   @PostMapping("")
   public ResponseEntity<FoodResponseDto> saveFood(
-      @RequestBody @Valid FoodSaveRequestDto foodSaveRequestDto) {
+      @RequestBody @Valid FoodRequestDto foodRequestDto) {
 
     Food food =
         foodService.saveFood(
-            foodSaveRequestDto.getFoodName(),
-            foodSaveRequestDto.getFoodType(),
-            foodSaveRequestDto.getFoodMemo(),
-            foodSaveRequestDto.getExpireAt(),
-            foodSaveRequestDto.getFridgeId());
+            foodRequestDto.getFoodName(),
+            foodRequestDto.getFoodType(),
+            foodRequestDto.getFoodMemo(),
+            foodRequestDto.getExpireAt(),
+            foodRequestDto.getFridgeId());
 
     return ResponseEntity.ok(FoodResponseDto.from(food));
   }
@@ -89,16 +88,16 @@ public class FoodController {
       })
   @PutMapping("/{foodId}")
   public ResponseEntity<FoodResponseDto> updateFood(
-      @PathVariable Long foodId, @RequestBody @Valid FoodUpdateRequestDto foodUpdateRequestDto) {
+      @PathVariable Long foodId, @RequestBody @Valid FoodRequestDto foodRequestDto) {
 
     Food food =
         foodService.updateFood(
             foodId,
-            foodUpdateRequestDto.getFoodName(),
-            foodUpdateRequestDto.getFoodType(),
-            foodUpdateRequestDto.getFoodMemo(),
-            foodUpdateRequestDto.getExpireAt(),
-            foodUpdateRequestDto.getFridgeId());
+            foodRequestDto.getFoodName(),
+            foodRequestDto.getFoodType(),
+            foodRequestDto.getFoodMemo(),
+            foodRequestDto.getExpireAt(),
+            foodRequestDto.getFridgeId());
 
     return ResponseEntity.ok(FoodResponseDto.from(food));
   }

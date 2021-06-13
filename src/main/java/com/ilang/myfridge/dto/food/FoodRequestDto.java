@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FoodSaveRequestDto {
+public class FoodRequestDto {
 
   @NotBlank
   @Size(min = 1, max = 50)
@@ -19,6 +19,7 @@ public class FoodSaveRequestDto {
 
   // todo enum validation
   @NotNull FoodType foodType;
+
   private String foodMemo;
 
   @NotNull private LocalDate expireAt;
