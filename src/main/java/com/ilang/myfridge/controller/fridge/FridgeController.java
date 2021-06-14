@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/fridge")
+@RequestMapping("/api/v1/fridges")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class FridgeController {
 
