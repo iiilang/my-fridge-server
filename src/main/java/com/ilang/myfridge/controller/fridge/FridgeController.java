@@ -33,6 +33,18 @@ public class FridgeController {
         return ResponseEntity.ok(FridgeDetailResponseDto.from(fridge));
     }
 
+    @Operation(summary = "냉장고 목록 조회")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Found Food List"),
+                    @ApiResponse(responseCode = "RE01", description = "User Not Found")
+            })
+    @GetMapping("/list/{userId}")
+    public ResponseEntity<List<FridgeResponseDto>> findByUserId(@PathVariable Long userId) {
+        List<FridgeResponseDto> fridgeListResponses = fridgeService.findFridgeList(userId);
+        return ResponseEntity.ok(fridgeListResponses);
+    }
+
     @Operation(summary = "냉장고 저장")
     @ApiResponses(
         value = {
@@ -50,18 +62,6 @@ public class FridgeController {
                 fridgeSaveRequestDto.getFridgeBasic(),
                 fridgeSaveRequestDto.getFridgeIcon());
         return ResponseEntity.ok(FridgeSaveResponseDto.from(fridge));
-    }
-
-    @Operation(summary = "냉장고 목록조회")
-    @ApiResponses(
-            value = {
-                    @ApiResponse(responseCode = "200", description = "OK"),
-                    @ApiResponse(responseCode = "RE01", description = "Fridge Not Found")
-            })
-    @GetMapping("/list")
-    public ResponseEntity<List<FridgeListResponseDto>> findAll() {
-        List<FridgeListResponseDto> fridgeListResponses = fridgeService.findAllDesc();
-        return ResponseEntity.ok(fridgeListResponses);
     }
 
     @Operation(summary = "냉장고 수정")

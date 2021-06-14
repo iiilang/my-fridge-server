@@ -8,6 +8,9 @@ public enum ErrorCode {
   INVALID_INPUT_VALUE("C001", "입력값이 유효하지 않습니다."),
   JSON_PARSE_ERROR("C002", "JSON을 파싱할 수 없습니다."),
 
+  // User
+  USER_NOT_FOUND("US01", "사용자를 찾을 수 없습니다."),
+
   // Fridge
   FRIDGE_NOT_FOUND("RE01", "냉장고를 찾을 수 없습니다."),
   FRIDGE_NAME_DUPLICATED("RE02", "냉장고명이 중복됩니다."),

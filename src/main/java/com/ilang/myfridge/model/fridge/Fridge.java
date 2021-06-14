@@ -40,7 +40,7 @@ public class Fridge extends BaseTimeEntity {
   @JoinColumn(name = "userid")
   private User user;
 
-  public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
+  public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon, User user) {
     return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
   }
 
