@@ -29,11 +29,8 @@ public class User extends BaseTimeEntity {
   @OneToMany(mappedBy = "user")
   private List<Fridge> fridgeList;
 
-  private User(String uuid) {
+  @Builder
+  public User(String uuid) {
     this.uuid = uuid;
-  }
-
-  public static User from(String uuid) {
-    return new User(uuid);
   }
 }
