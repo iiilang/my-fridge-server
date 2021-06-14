@@ -84,7 +84,7 @@ public class FridgeService {
 
     private boolean fridgeNameExist(Long userId, Long fridgeId, String fridgeName) {
         List<String> fridgeNames = fridgeRepository.findAllByUserId(userId).stream()
-                .filter(fridge -> !(fridge.equals(fridgeId)))
+                .filter(fridge -> !(fridgeId.equals(fridge.getId())))
                 .map(Fridge::getFridgeName)
                 .filter(fridge -> fridge.equals(fridgeName))
                 .collect(Collectors.toList());
