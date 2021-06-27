@@ -14,4 +14,7 @@ public class UserSaveRequestDto {
     @NotNull
     @Size(max = 40)
     private String uuid;
+
+    public UserSaveRequestDto() {
+    }
 }
