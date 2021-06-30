@@ -47,7 +47,7 @@ public class FridgeService {
 
     @Transactional
     public Fridge updateFridge(
-            Long fridgeId, String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+            Long fridgeId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
         Fridge fridge = fridgeRepository
                 .findById(fridgeId)
                 .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
@@ -56,7 +56,7 @@ public class FridgeService {
             throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
 
-        return fridge.update(fridgeName, fridgeIcon, fridgeBasic, fridgeMemo);
+        return fridge.update(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon);
     }
 
     @Transactional
