@@ -8,6 +8,7 @@ import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.model.user.User;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
 import com.ilang.myfridge.repository.user.UserRepository;
+import com.ilang.myfridge.service.food.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class FridgeService {
 
     private final FridgeRepository fridgeRepository;
     private final UserRepository userRepository;
+    private final FoodService foodService;
 
     @Transactional
     public Fridge findFridgeDetail(Long fridgeId) {
@@ -56,7 +58,15 @@ public class FridgeService {
             throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
 
+        if (fridgeTypeChanged(fridge, fridgeType)) {
+            foodService.updateFoodType(fridgeId, fridgeType);
+        }
+
         return fridge.update(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon);
+    }
+
+    private boolean fridgeTypeChanged(Fridge fridge, FridgeType fridgeType) {
+        return !fridge.getFridgeType().equals(fridgeType);
     }
 
     @Transactional
