@@ -5,8 +5,10 @@ import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.food.FoodType;
 import com.ilang.myfridge.model.fridge.Fridge;
+import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,9 +22,6 @@ public class FoodService {
 
   private final FridgeRepository fridgeRepository;
   private final FoodRepository foodRepository;
-
-  // todo findFood 테스트 코드 짜기 (단위 테스트 코드 짜는 거 공부하기)
-  // todo slf4j를 이용한 로깅
 
   @Transactional(readOnly = true)
   public Food findFoodDetail(Long foodId) {
@@ -45,12 +44,9 @@ public class FoodService {
       String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Long fridgeId) {
 
     Fridge fridge = getFridgeIfExist(fridgeId);
-    checkFoodName(fridge, foodName);
 
-    if (!foodType.typeMatch(fridge.getFridgeType())) {
-      // todo NotFoundException 변경 필요
-      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
-    }
+    checkFoodName(fridge, foodName);
+    checkFoodType(fridge.getFridgeType(), foodType);
 
     return foodRepository.save(Food.of(foodName, foodType, foodMemo, expireAt, fridge));
   }
@@ -68,10 +64,8 @@ public class FoodService {
     Fridge fridge = getFridgeIfExist(fridgeId);
 
     checkFoodName(fridge, foodId, foodName);
+    checkFoodType(fridge.getFridgeType(), foodType);
 
-    if (!foodType.typeMatch(fridge.getFridgeType())) {
-      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
-    }
     return food.update(foodName, foodType, foodMemo, expireAt, fridge);
   }
 
@@ -115,6 +109,13 @@ public class FoodService {
 
     if (!foodNameList.isEmpty()) {
       throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
+    }
+  }
+
+  private void checkFoodType(FridgeType fridgeType, FoodType foodType){
+    if (!foodType.typeMatch(fridgeType)) {
+      // todo NotFoundException 변경 필요
+      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
     }
   }
 }
