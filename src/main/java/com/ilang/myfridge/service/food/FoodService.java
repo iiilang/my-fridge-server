@@ -5,8 +5,10 @@ import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.food.FoodType;
 import com.ilang.myfridge.model.fridge.Fridge;
+import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.repository.food.FoodRepository;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,16 +23,10 @@ public class FoodService {
   private final FridgeRepository fridgeRepository;
   private final FoodRepository foodRepository;
 
-  // todo findFood 테스트 코드 짜기 (단위 테스트 코드 짜는 거 공부하기)
-  // todo slf4j를 이용한 로깅
-
   @Transactional(readOnly = true)
   public Food findFoodDetail(Long foodId) {
 
-    Food food =
-        foodRepository
-            .findById(foodId)
-            .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
+    Food food = getFoodIfExist(foodId);
 
     return food;
   }
@@ -38,10 +34,7 @@ public class FoodService {
   @Transactional
   public List<Food> findFoodList(Long fridgeId) {
 
-    Fridge fridge =
-        fridgeRepository
-            .findById(fridgeId)
-            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+    Fridge fridge = getFridgeIfExist(fridgeId);
 
     return foodRepository.findAllByFridge(fridge);
   }
@@ -50,19 +43,10 @@ public class FoodService {
   public Food saveFood(
       String foodName, FoodType foodType, String foodMemo, LocalDate expireAt, Long fridgeId) {
 
-    Fridge fridge =
-        fridgeRepository
-            .findById(fridgeId)
-            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+    Fridge fridge = getFridgeIfExist(fridgeId);
 
-    if (foodNameExist(fridge, foodName)) {
-      throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
-    }
-
-    if (!foodType.typeMatch(fridge.getFridgeType())) {
-      // todo NotFoundException 변경 필요
-      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
-    }
+    checkFoodName(fridge, foodName);
+    checkFoodType(fridge.getFridgeType(), foodType);
 
     return foodRepository.save(Food.of(foodName, foodType, foodMemo, expireAt, fridge));
   }
@@ -76,45 +60,46 @@ public class FoodService {
       LocalDate expireAt,
       Long fridgeId) {
 
-    Food food =
-        foodRepository
-            .findById(foodId)
-            .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
+    Food food = getFoodIfExist(foodId);
+    Fridge fridge = getFridgeIfExist(fridgeId);
 
-    if (foodNameExist(food.getFridge(), foodId, foodName)) {
-      throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
-    }
+    checkFoodName(fridge, foodId, foodName);
+    checkFoodType(fridge.getFridgeType(), foodType);
 
-    Fridge fridge =
-        fridgeRepository
-            .findById(fridgeId)
-            .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
-
-    if (!foodType.typeMatch(fridge.getFridgeType())) {
-      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
-    }
     return food.update(foodName, foodType, foodMemo, expireAt, fridge);
   }
 
   @Transactional
   public void deleteFood(Long foodId) {
-    foodRepository
-        .findById(foodId)
-        .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
+    getFoodIfExist(foodId);
     foodRepository.deleteById(foodId);
   }
 
-  private boolean foodNameExist(Fridge fridge, String foodName) {
+  private Food getFoodIfExist(Long foodId) {
+    return foodRepository
+        .findById(foodId)
+        .orElseThrow(() -> NotFoundException.of(ErrorCode.FOOD_NOT_FOUND));
+  }
+
+  private Fridge getFridgeIfExist(Long fridgeId) {
+    return fridgeRepository
+        .findById(fridgeId)
+        .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
+  }
+
+  private void checkFoodName(Fridge fridge, String foodName) {
     List<String> foodNameList =
         foodRepository.findAllByFridge(fridge).stream()
             .map(food -> food.getFoodName())
             .filter(food -> food.equals(foodName))
             .collect(Collectors.toList());
 
-    return !(foodNameList.isEmpty());
+    if (!foodNameList.isEmpty()) {
+      throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
+    }
   }
 
-  private boolean foodNameExist(Fridge fridge, Long foodId, String foodName) {
+  private void checkFoodName(Fridge fridge, Long foodId, String foodName) {
     List<String> foodNameList =
         foodRepository.findAllByFridge(fridge).stream()
             .filter(food -> (!food.getId().equals(foodId)))
@@ -122,6 +107,15 @@ public class FoodService {
             .filter(food -> food.equals(foodName))
             .collect(Collectors.toList());
 
-    return !(foodNameList.isEmpty());
+    if (!foodNameList.isEmpty()) {
+      throw NotFoundException.of(ErrorCode.FOOD_NAME_DUPLICATED);
+    }
+  }
+
+  private void checkFoodType(FridgeType fridgeType, FoodType foodType){
+    if (!foodType.typeMatch(fridgeType)) {
+      // todo NotFoundException 변경 필요
+      throw NotFoundException.of(ErrorCode.TYPE_NOT_MATCH);
+    }
   }
 }
