@@ -39,4 +39,8 @@ public class Food extends BaseTimeEntity {
   @ManyToOne
   @JoinColumn(name = "fridgeId")
   private Fridge fridge;
+
+  public void changeType(FoodType foodType){
+    this.foodType = foodType;
+  }
 }

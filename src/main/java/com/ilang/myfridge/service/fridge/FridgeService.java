@@ -3,6 +3,8 @@ package com.ilang.myfridge.service.fridge;
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.dto.fridge.FridgeResponseDto;
+import com.ilang.myfridge.model.food.Food;
+import com.ilang.myfridge.model.food.FoodType;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.model.user.User;
@@ -59,10 +61,17 @@ public class FridgeService {
         }
 
         if (fridgeTypeChanged(fridge, fridgeType)) {
-            foodService.updateFoodType(fridgeId, fridgeType);
+            FoodType foodType = changedFoodType(fridgeType);
+            for (Food food : fridge.getFoodList()){
+                food.changeType(foodType);
+            }
         }
 
         return fridge.update(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon);
+    }
+
+    private FoodType changedFoodType(FridgeType fridgeType){
+        return fridgeType.equals(FridgeType.ROOM) ? FoodType.ROOM : FoodType.REF;
     }
 
     private boolean fridgeTypeChanged(Fridge fridge, FridgeType fridgeType) {
