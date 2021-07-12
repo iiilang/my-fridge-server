@@ -56,5 +56,8 @@ public class Food extends BaseTimeEntity {
     this.expireAt = expireAt;
     this.fridge = fridge;
     return this;
+
+  public void changeType(FoodType foodType){
+    this.foodType = foodType;
   }
 }

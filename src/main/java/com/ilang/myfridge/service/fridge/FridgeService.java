@@ -3,11 +3,14 @@ package com.ilang.myfridge.service.fridge;
 import com.ilang.myfridge.controller.exception.ErrorCode;
 import com.ilang.myfridge.controller.exception.NotFoundException;
 import com.ilang.myfridge.dto.fridge.FridgeResponseDto;
+import com.ilang.myfridge.model.food.Food;
+import com.ilang.myfridge.model.food.FoodType;
 import com.ilang.myfridge.model.fridge.Fridge;
 import com.ilang.myfridge.model.fridge.FridgeType;
 import com.ilang.myfridge.model.user.User;
 import com.ilang.myfridge.repository.fridge.FridgeRepository;
 import com.ilang.myfridge.repository.user.UserRepository;
+import com.ilang.myfridge.service.food.FoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,7 @@ public class FridgeService {
 
     private final FridgeRepository fridgeRepository;
     private final UserRepository userRepository;
+    private final FoodService foodService;
 
     @Transactional
     public Fridge findFridgeDetail(Long fridgeId) {
@@ -47,7 +51,7 @@ public class FridgeService {
 
     @Transactional
     public Fridge updateFridge(
-            Long fridgeId, String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+            Long fridgeId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
         Fridge fridge = fridgeRepository
                 .findById(fridgeId)
                 .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
@@ -56,7 +60,22 @@ public class FridgeService {
             throw NotFoundException.of(ErrorCode.FRIDGE_NAME_DUPLICATED);
         }
 
-        return fridge.update(fridgeName, fridgeIcon, fridgeBasic, fridgeMemo);
+        if (fridgeTypeChanged(fridge, fridgeType)) {
+            FoodType foodType = changedFoodType(fridgeType);
+            for (Food food : fridge.getFoodList()){
+                food.changeType(foodType);
+            }
+        }
+
+        return fridge.update(fridgeName, fridgeType, fridgeMemo, fridgeBasic, fridgeIcon);
+    }
+
+    private FoodType changedFoodType(FridgeType fridgeType){
+        return fridgeType.equals(FridgeType.ROOM) ? FoodType.ROOM : FoodType.REF;
+    }
+
+    private boolean fridgeTypeChanged(Fridge fridge, FridgeType fridgeType) {
+        return !fridge.getFridgeType().equals(fridgeType);
     }
 
     @Transactional

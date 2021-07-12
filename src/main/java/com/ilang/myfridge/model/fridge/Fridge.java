@@ -1,8 +1,11 @@
 package com.ilang.myfridge.model.fridge;
 
 import com.ilang.myfridge.model.BaseTimeEntity;
+import com.ilang.myfridge.model.food.Food;
 import com.ilang.myfridge.model.user.User;
 
+import java.util.Collections;
+import java.util.List;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
@@ -40,15 +43,21 @@ public class Fridge extends BaseTimeEntity {
   @JoinColumn(name = "userid")
   private User user;
 
+  @OneToMany(fetch=FetchType.LAZY, mappedBy = "fridge")
+  private List<Food> foodList;
+
   public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon, User user) {
-    return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user);
+    List<Food> foodList = Collections.emptyList();
+    return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user, foodList);
   }
 
-  public Fridge update(String fridgeName, String fridgeIcon, String fridgeBasic, String fridgeMemo) {
+  public Fridge update(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
     this.fridgeName = fridgeName;
-    this.fridgeIcon = fridgeIcon;
-    this.fridgeBasic = fridgeBasic;
+    this.fridgeType = fridgeType;
     this.fridgeMemo = fridgeMemo;
+    this.fridgeBasic = fridgeBasic;
+    this.fridgeIcon = fridgeIcon;
     return this;
   }
+
 }

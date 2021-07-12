@@ -76,9 +76,10 @@ public class FridgeController {
         Fridge fridge = fridgeService.updateFridge(
                             fridgeId,
                             fridgeUpdateRequestDto.getFridgeName(),
-                            fridgeUpdateRequestDto.getFridgeIcon(),
+                            fridgeUpdateRequestDto.getFridgeType(),
+                            fridgeUpdateRequestDto.getFridgeMemo(),
                             fridgeUpdateRequestDto.getFridgeBasic(),
-                            fridgeUpdateRequestDto.getFridgeMemo());
+                            fridgeUpdateRequestDto.getFridgeIcon());
         return ResponseEntity.ok(FridgeDetailResponseDto.from(fridge));
     }
 
