@@ -21,6 +21,6 @@ public class OpenApiConfig {
 
   @Bean
   public GroupedOpenApi userApis() {
-    return GroupedOpenApi.builder().setGroup("user").pathsToMatch("/**/users/**").build();
+    return GroupedOpenApi.builder().setGroup("users").pathsToMatch("/**/users/**").build();
   }
 }

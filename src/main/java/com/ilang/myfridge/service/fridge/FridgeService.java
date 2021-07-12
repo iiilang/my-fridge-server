@@ -71,7 +71,7 @@ public class FridgeService {
     }
 
     private FoodType changedFoodType(FridgeType fridgeType){
-        return fridgeType.equals(FridgeType.ROOM) ? FoodType.ROOM : FoodType.REF;
+        return fridgeType.equals(FridgeType.ROOM) ? FoodType.ROOM : FoodType.REFRIGERATED;
     }
 
     private boolean fridgeTypeChanged(Fridge fridge, FridgeType fridgeType) {
