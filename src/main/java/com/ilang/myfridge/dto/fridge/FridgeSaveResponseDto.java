@@ -13,7 +13,7 @@ public class FridgeSaveResponseDto {
     private Long fridgeId;
     private String fridgeName;
     private String fridgeIcon;
-    private String fridgeBasic;
+    private boolean fridgeBasic;
     private FridgeType fridgeType;
     private String fridgeMemo;
 
@@ -22,7 +22,7 @@ public class FridgeSaveResponseDto {
             fridge.getId(),
             fridge.getFridgeName(),
             fridge.getFridgeIcon(),
-            fridge.getFridgeBasic(),
+            fridge.isFridgeBasic(),
             fridge.getFridgeType(),
             fridge.getFridgeMemo());
     }

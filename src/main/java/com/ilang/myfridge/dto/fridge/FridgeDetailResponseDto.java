@@ -14,7 +14,7 @@ public class FridgeDetailResponseDto {
     private String fridgeIcon;
     private String fridgeName;
     private FridgeType fridgeType;
-    private String fridgeBasic;
+    private boolean fridgeBasic;
     private String fridgeMemo;
 
     public static FridgeDetailResponseDto from(Fridge fridge) {
@@ -23,7 +23,7 @@ public class FridgeDetailResponseDto {
             fridge.getFridgeIcon(),
             fridge.getFridgeName(),
             fridge.getFridgeType(),
-            fridge.getFridgeBasic(),
+            fridge.isFridgeBasic(),
             fridge.getFridgeMemo());
     }
 }

@@ -36,8 +36,8 @@ public class Fridge extends BaseTimeEntity {
   @Column(columnDefinition = "text default null")
   private String fridgeMemo;
 
-  @Column(length = 3, nullable = false)
-  private String fridgeBasic;
+  @Column(nullable = false)
+  private boolean fridgeBasic;
 
   @ManyToOne(cascade= CascadeType.ALL)
   @JoinColumn(name = "userid")
@@ -46,12 +46,12 @@ public class Fridge extends BaseTimeEntity {
   @OneToMany(fetch=FetchType.LAZY, mappedBy = "fridge")
   private List<Food> foodList;
 
-  public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon, User user) {
+  public static Fridge of(String fridgeName, FridgeType fridgeType, String fridgeMemo, boolean fridgeBasic, String fridgeIcon, User user) {
     List<Food> foodList = Collections.emptyList();
     return new Fridge(null, fridgeIcon, fridgeName, fridgeType, fridgeMemo, fridgeBasic, user, foodList);
   }
 
-  public Fridge update(String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
+  public Fridge update(String fridgeName, FridgeType fridgeType, String fridgeMemo, boolean fridgeBasic, String fridgeIcon) {
     this.fridgeName = fridgeName;
     this.fridgeType = fridgeType;
     this.fridgeMemo = fridgeMemo;

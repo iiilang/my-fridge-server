@@ -59,7 +59,7 @@ public class FridgeController {
                 fridgeSaveRequestDto.getFridgeName(),
                 fridgeSaveRequestDto.getFridgeType(),
                 fridgeSaveRequestDto.getFridgeMemo(),
-                fridgeSaveRequestDto.getFridgeBasic(),
+                fridgeSaveRequestDto.isFridgeBasic(),
                 fridgeSaveRequestDto.getFridgeIcon());
         return ResponseEntity.ok(FridgeSaveResponseDto.from(fridge));
     }
@@ -78,7 +78,7 @@ public class FridgeController {
                             fridgeUpdateRequestDto.getFridgeName(),
                             fridgeUpdateRequestDto.getFridgeType(),
                             fridgeUpdateRequestDto.getFridgeMemo(),
-                            fridgeUpdateRequestDto.getFridgeBasic(),
+                            fridgeUpdateRequestDto.isFridgeBasic(),
                             fridgeUpdateRequestDto.getFridgeIcon());
         return ResponseEntity.ok(FridgeDetailResponseDto.from(fridge));
     }

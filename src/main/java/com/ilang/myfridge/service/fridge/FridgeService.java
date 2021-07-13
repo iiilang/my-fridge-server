@@ -37,7 +37,7 @@ public class FridgeService {
 
     @Transactional
     public Fridge saveFridge(
-            Long userId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
+            Long userId, String fridgeName, FridgeType fridgeType, String fridgeMemo, boolean fridgeBasic, String fridgeIcon) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> NotFoundException.of(ErrorCode.USER_NOT_FOUND));
@@ -51,7 +51,7 @@ public class FridgeService {
 
     @Transactional
     public Fridge updateFridge(
-            Long fridgeId, String fridgeName, FridgeType fridgeType, String fridgeMemo, String fridgeBasic, String fridgeIcon) {
+            Long fridgeId, String fridgeName, FridgeType fridgeType, String fridgeMemo, boolean fridgeBasic, String fridgeIcon) {
         Fridge fridge = fridgeRepository
                 .findById(fridgeId)
                 .orElseThrow(() -> NotFoundException.of(ErrorCode.FRIDGE_NOT_FOUND));
